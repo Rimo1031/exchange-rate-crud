@@ -2,7 +2,16 @@ graphql = require("graphql");
 
 const schema = graphql.buildSchema(`
     type Query {
-        getExchangeRate: ExchangeInfo
+        getExchangeRate(src: String!, tgt: String!): ExchangeInfo
+    }
+    type Mutation {
+        postExchangeRate(info: InputUpdateExchangeInfo): ExchangeInfo
+    }
+    input InputUpdateExchangeInfo {
+        src: String!
+        tgt: String!
+        rate: Float!
+        date: String!
     }
     type ExchangeInfo {
         src: String!
