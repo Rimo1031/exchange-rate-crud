@@ -19,26 +19,48 @@ Node.js로 웹 서버 애플리케이션을 제작할 수 있게 해주는 프�
 
 ### GraphQL
 
-클라이언트에서 데이터베이스에 데이터를 요청할 때 사용하는 쿼리 언어.
-
-- Object type : 쿼리 결과로 가져올 수 있는 객체의 종류 + 그 객체의 필드
+클라이언트에서 데이터베이스에 데이터를 요청할 때 사용하는 쿼리 언어. 어떤 객체와 그 객체의 필드를 요청하면 맞는 값을 반환해 준다. 쿼리할 때 어떤 객체와 필드를 요구할지만 작성해도 상관없지만 (단축 문법), 혼동을 방지하기 위해 보통 작업 타입(query, mutation)과 작업 이름(함수명의 역할)을 기재해서 쿼리문을 작성한다.
 
 ```
+query HeroNameAndFriends {
+    hero {
+        name
+        friends {
+            name
+        }
+    }
+}
+```
+
+- Object type : 쿼리 결과로 가져올 수 있는 객체의 종류 + 그 객체의 필드.
+
+```
+
     type Character {
         name: String!
         appearsIn: [Episode]!
     }
+
 ```
 
 Character 타입 객체는 name, appearIn 필드를 가지고, name은 String 타입, appearsIn은 Episode 객체의 배열을 가진다. !는 해당 필드가 non-nullable함을 의미한다.
 
-- Schema : Object type들을 미리 선언해 둔 것. type명을 이름으로 가지는 함수의 원형을 선언한 것과 유사함
+- Schema : Object type들을 미리 선언해 둔 것. type명을 이름으로 가지는 함수의 원형을 선언한 것과 유사함. (예시 : C의 헤더 파일) 서버에 요청할 수 있는 데이터에 대한 정확한 표현을 미리 정의해 두고, 쿼리가 들어오면 스키마와 대조해서 유효성 검사를 실시함.
 
-- Resolver : 특정 type의 쿼리가 들어왔을 때 어떤 값을 반환할 것인지를 구현. Schema에서 선언한 함수의 내용을 실제 구현하는 것과 유사함
-  - 구현해야 할 Resolver : get/post/deleteExchangeRate. DB에 접근하여 해당 데이터를 CRUD
+  - query, mutation 타입 : 스키마 내의 특수한 타입. 일반 객체 타입과 동일하되, "쿼리의 entry point" 역할을 함
+  - input 타입 : mutation 과정에서 생성되는 전체 객체를 전달할 때 사용. 일반 객체 타입과 완전히 같지만, 선언 시 `type` 대신 `input` 사용
+
+- Resolver : 특정 type의 쿼리가 들어왔을 때 어떤 값을 반환할 것인지를 구현. GraphQL 쿼리에서의 각 필드는 "특정 타입을 반환하는 함수"로 생각할 수 있고, 실제로 이렇게 작동함. 각 필드마다 그 필드가 실행되었을 때 호출되는 resolver 함수가 존재함.
 
 ### MongoDB
 
 데이터베이스.
 
-### Express(Node.js) <-> GraphQL <-> MongoDB ?
+### 구현 순서
+
+1. Express 서버 가동
+2. GraphQL Schema 작성
+   - 일단 get~ schema가 String 타입의 text만 가지게 설정. 데이터를 받는 부분은 추후 구현
+3. GraphQL Resolver 작성
+   - Query 타입의 get~ schema, text field에 "Hello, world!" 를 반환
+   - Schema / Resolver 테스트 목적
