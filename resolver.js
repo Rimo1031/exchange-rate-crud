@@ -9,6 +9,7 @@ const resolver = {
   getExchangeRate: () => {
     return sample;
   },
+  postExchangeRate: () => {},
 };
 
 module.exports = resolver;
