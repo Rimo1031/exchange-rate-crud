@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const ExchangeInfo = new Schema({
-  source: String,
+  src: String,
   tgt: String,
   rate: Number,
   date: String,

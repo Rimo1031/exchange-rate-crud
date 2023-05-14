@@ -1,15 +1,16 @@
-## Reference
+# Reference
 
-### Official Docs
+## Official Docs
 
-- Express : https://expressjs.com/ko/starter/hello-world.html
-- GraphQL : https://graphql-kr.github.io/learn/
-- MongoDB : https://www.mongodb.com/docs/drivers/node/current/quick-start/
+- Express : <https://expressjs.com/ko/starter/hello-world.html>
+- GraphQL : <https://graphql-kr.github.io/learn/>
+- MongoDB : <https://www.mongodb.com/docs/drivers/node/current/quick-start/>
+- Mongoose : <https://mongoosejs.com/docs/guides.html>
 
-### Blogs
+## Blogs
 
-- GraphQL, Express 연동 : https://velog.io/@soryeongk/express-graphql-basic
-- GraphQL, MongoDB 연동 : https://yuddomack.tistory.com/entry/expressgraphql에-mongodb-사용하기
+- GraphQL, Express 연동 : <https://velog.io/@soryeongk/express-graphql-basic>
+- GraphQL, MongoDB 연동 : <https://yuddomack.tistory.com/entry/expressgraphql에-mongodb-사용하기>
 
 ## 기술 분석
 
@@ -21,7 +22,7 @@ Node.js로 웹 서버 애플리케이션을 제작할 수 있게 해주는 프�
 
 클라이언트에서 데이터베이스에 데이터를 요청할 때 사용하는 쿼리 언어. 어떤 객체와 그 객체의 필드를 요청하면 맞는 값을 반환해 준다. 쿼리할 때 어떤 객체와 필드를 요구할지만 작성해도 상관없지만 (단축 문법), 혼동을 방지하기 위해 보통 작업 타입(query, mutation)과 작업 이름(함수명의 역할)을 기재해서 쿼리문을 작성한다.
 
-```
+```graphql
 query HeroNameAndFriends {
     hero {
         name
@@ -34,12 +35,11 @@ query HeroNameAndFriends {
 
 - Object type : 쿼리 결과로 가져올 수 있는 객체의 종류 + 그 객체의 필드.
 
-```
-
-    type Character {
-        name: String!
-        appearsIn: [Episode]!
-    }
+```graphql
+type Character {
+    name: String!
+    appearsIn: [Episode]!
+}
 
 ```
 
@@ -58,7 +58,11 @@ Character 타입 객체는 name, appearIn 필드를 가지고, name은 String �
 
 ### Mongoose
 
-Node.js와 MongoDB를 연결시켜주는 모듈. GraphQL과 동일하게 schema를 선언하고, 해당 schema를 가지는 model을 생성한다.
+Node.js와 MongoDB를 연결시켜주는 모듈. GraphQL과 동일하게 schema를 선언하고, 해당 schema를 가지는 model을 생성한다. 그리고 model의 instance를 document라 칭한다. model에 대해 query(get), delete, update를 수행할 수 있다.
+
+- `Model.findOne()` : `Model` 안에서 하나의 document를 찾아낸다. 인자로 찾아낼 document의 조건을 객체 형태로 넘겨주고, Query 타입을 반환한다. get~ 쿼리에 사용할 예정
+- `Model.findOneAndDelete()` : `Model` 안에서 하나의 document를 찾아 반환하고 삭제한다. delete~ 쿼리에 사용할 예정
+- `Model.findOneAndUpdate()` : `Model` 안에서 하나의 document를 찾아 update한다. 인자에 주어질 option 객체의 `upsert` field가 true라면 조건에 해당하는 document를 찾지 못했을 때 새로운 document를 삽입한다. post~ 쿼리에 사용할 예정
 
 ### 구현 순서
 
@@ -70,3 +74,7 @@ Node.js와 MongoDB를 연결시켜주는 모듈. GraphQL과 동일하게 schema�
    - Schema / Resolver 테스트 목적
    - post~ resolver test
 4. MongoDB 연결 : Mongoose 사용
+5. Mongoose API를 사용해 resolver에 DB 연결 부분 구현
+    - get~ resolver 구현
+    - post~ resolver 구현
+    - delete~ resolver 구현

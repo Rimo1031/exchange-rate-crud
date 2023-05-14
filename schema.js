@@ -6,12 +6,13 @@ const schema = graphql.buildSchema(`
     }
     type Mutation {
         postExchangeRate(info: InputUpdateExchangeInfo): ExchangeInfo
+        deleteExchangeRate(info: InputUpdateExchangeInfo): ExchangeInfo
     }
     input InputUpdateExchangeInfo {
         src: String!
         tgt: String!
         rate: Float!
-        date: String!
+        date: String
     }
     input InputDeleteExchangeInfo {
         src: String!
@@ -22,7 +23,7 @@ const schema = graphql.buildSchema(`
         src: String!
         tgt: String!
         rate: Float!
-        date: String!
+        date: String
     }
 `);
 
