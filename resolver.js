@@ -2,7 +2,8 @@ const excinfo = require("./schema_mongoose");
 
 const resolver = {
   getExchangeRate: async (args) => {
-    const result = await excinfo.findOne({ src: args.src, tgt: args.tgt });
+    const filter = { src: args.src, tgt: args.tgt }
+    const result = await excinfo.findOne(filter);
     return result;
   },
   postExchangeRate: async (args) => {
@@ -20,7 +21,24 @@ const resolver = {
       let str = dt.getFullYear() + '-' + (dt.getMonth()+1) + '-' + dt.getDate();
       filter.date = str;
     }
-    const result = await excinfo.findOneAndUpdate(filter, update, { upsert: true });
+
+    const doc = await excinfo.findOne(filter);
+    let result;
+    if (doc == null) {    // if no document was found
+      const data = {
+        src: args.info.src,
+        tgt: args.info.tgt,
+        rate: args.info.rate,
+        date: args.info.date,
+      }
+      result = new excinfo(data);
+      await result.save();
+    }
+    else {
+      result = await excinfo.findOne(filter);
+      // return document "before" update.
+      await excinfo.updateOne(filter, update);
+    }
     return result;
   },
   deleteExchangeRate: async (args) => {
