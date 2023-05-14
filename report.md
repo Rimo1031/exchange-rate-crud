@@ -4,12 +4,12 @@
 
 - Express : https://expressjs.com/ko/starter/hello-world.html
 - GraphQL : https://graphql-kr.github.io/learn/
-- MongoDB : https://www.mongodb.com/docs/guides/
+- MongoDB : https://www.mongodb.com/docs/drivers/node/current/quick-start/
 
 ### Blogs
 
 - GraphQL, Express 연동 : https://velog.io/@soryeongk/express-graphql-basic
-- GraphQL, MongoDB 연동 : https://velog.io/@wjd489898/graphQL-MongoDB-실습하기
+- GraphQL, MongoDB 연동 : https://yuddomack.tistory.com/entry/expressgraphql에-mongodb-사용하기
 
 ## 기술 분석
 

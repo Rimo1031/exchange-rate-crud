@@ -8,22 +8,13 @@ const sample = [
 ];
 
 const resolver = {
-  getExchangeRate: (obj, args, context) => {
-    res = {
-      src: args.src,
-      tgt: args.tgt,
-      rate: sample[0].rate,
-      date: sample[0].date,
-    };
-    return res;
+  getExchangeRate: (args) => {
+    console.log(args.src);
+    return sample[0];
   },
-  postExchangeRate: (obj, args, context) => {
-    res = {
-      src: args.src,
-      tgt: args.tgt,
-      rate: args.rate,
-      date: args.date,
-    };
+  postExchangeRate: (args) => {
+    res = args.info;
+    sample.push(res);
     return res;
   },
 };

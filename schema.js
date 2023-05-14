@@ -13,6 +13,11 @@ const schema = graphql.buildSchema(`
         rate: Float!
         date: String!
     }
+    input InputDeleteExchangeInfo {
+        src: String!
+        tgt: String!
+        date: String!
+    }
     type ExchangeInfo {
         src: String!
         tgt: String!
