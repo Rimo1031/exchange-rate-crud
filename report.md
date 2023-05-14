@@ -56,6 +56,10 @@ Character 타입 객체는 name, appearIn 필드를 가지고, name은 String �
 
 데이터베이스.
 
+### Mongoose
+
+Node.js와 MongoDB를 연결시켜주는 모듈. GraphQL과 동일하게 schema를 선언하고, 해당 schema를 가지는 model을 생성한다.
+
 ### 구현 순서
 
 1. Express 서버 가동
@@ -64,3 +68,5 @@ Character 타입 객체는 name, appearIn 필드를 가지고, name은 String �
 3. GraphQL Resolver 작성
    - Query 타입의 get~ schema, text field에 "Hello, world!" 를 반환
    - Schema / Resolver 테스트 목적
+   - post~ resolver test
+4. MongoDB 연결 : Mongoose 사용

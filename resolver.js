@@ -1,21 +1,20 @@
-const sample = [
-  {
-    src: "usd",
-    tgt: "krw",
-    rate: "1342.11",
-    date: "2022-11-28",
-  },
-];
+const model = require("./schema_mongoose");
 
 const resolver = {
   getExchangeRate: (args) => {
-    console.log(args.src);
-    return sample[0];
+    const res = model.findOne({ src: args.src, tgt: args.tgt });
+    return res;
   },
   postExchangeRate: (args) => {
-    res = args.info;
-    sample.push(res);
-    return res;
+    const data = {
+      src: args.info.src,
+      tgt: args.info.tgt,
+      rate: args.info.rate,
+      date: args.info.date,
+    };
+    const newData = new model(data);
+    newData.save();
+    return data;
   },
 };
 
