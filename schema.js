@@ -6,7 +6,7 @@ const schema = graphql.buildSchema(`
     }
     type Mutation {
         postExchangeRate(info: InputUpdateExchangeInfo): ExchangeInfo
-        deleteExchangeRate(info: InputUpdateExchangeInfo): ExchangeInfo
+        deleteExchangeRate(info: InputDeleteExchangeInfo): ExchangeInfo
     }
     input InputUpdateExchangeInfo {
         src: String!
