@@ -14,12 +14,12 @@ Node.js로 웹 서버 애플리케이션을 제작할 수 있게 해주는 프�
 
 ```graphql
 query HeroNameAndFriends {
-    hero {
-        name
-        friends {
-            name
-        }
+  hero {
+    name
+    friends {
+      name
     }
+  }
 }
 ```
 
@@ -43,26 +43,28 @@ type Character {
 
 - Resolver : 특정 type의 쿼리가 들어왔을 때 어떤 값을 반환할 것인지를 구현. GraphQL 쿼리에서의 각 필드는 "특정 타입을 반환하는 함수"로 생각할 수 있고, 실제로 이렇게 작동함. Query와 Mutation 타입 내의 각 필드마다 그 필드가 실행되었을 때 호출되는 resolver 함수가 존재해야 함.
 
+- @key : directive의 일종으로, type에서의 primary key를 정의한다. Primary key는 다른 데이터의 field와 중복되지 않는 값을 가지는 field로, 모든 데이터가 다른 값을 가지기 때문에 데이터를 판별하는데 쓰인다.
+
 ### Mongoose
 
 Node.js와 MongoDB를 연결시켜주는 모듈. GraphQL과 동일하게 schema를 선언하고, 해당 schema를 가지는 model을 생성한다. 그리고 model의 instance를 document라 칭한다. model에 대해 query(get), delete, update를 수행할 수 있다.
 
 - `Model.findOne()` : `Model` 안에서 하나의 document를 찾아낸다. 인자로 찾아낼 document의 조건을 객체 형태로 넘겨주고, 찾아낸 document를 반환한다. get~ 쿼리에 사용할 예정
 - `Model.findOneAndDelete()` : `Model` 안에서 하나의 document를 찾아 반환하고 삭제한다. delete~ 쿼리에 사용할 예정
-- `Model.findOneAndUpdate()` : `Model` 안에서 하나의 document를 찾아 update한다. 인자에 주어질 option 객체의 `upsert` field가 true라면 조건에 해당하는 document를 찾지 못했을 때 새로운 document를 삽입한다. 이 때 반환하는 document는 별도 옵션을 부여하지 않으면 upsert 과정이 일어나기 __이전의__ document이다. post~ 쿼리에 사용할 예정
+- `Model.findOneAndUpdate()` : `Model` 안에서 하나의 document를 찾아 update한다. 인자에 주어질 option 객체의 `upsert` field가 true라면 조건에 해당하는 document를 찾지 못했을 때 새로운 document를 삽입한다. 이 때 반환하는 document는 별도 옵션을 부여하지 않으면 upsert 과정이 일어나기 **이전의** document이다. post~ 쿼리에 사용할 예정
 
 ## 구현 계획
 
 1. Express 서버 가동
 2. GraphQL Schema 작성
 3. GraphQL Resolver 작성
-    - 이 때 Resolver는 일단 로컬에 하드코딩된 데이터를 참조하게 구현한다. (Schema와 Resolver 간의 연결이 잘 이루어졌는지 확인하기 위함)
+   - 이 때 Resolver는 일단 로컬에 하드코딩된 데이터를 참조하게 구현한다. (Schema와 Resolver 간의 연결이 잘 이루어졌는지 확인하기 위함)
 4. MongoDB 설정 및 연결
-    - Mongoose 사용
+   - Mongoose 사용
 5. Mongoose API를 사용해 resolver에 DB 연결 부분 구현
-    - get~ resolver 구현
-    - post~ resolver 구현
-    - delete~ resolver 구현
+   - get~ resolver 구현
+   - post~ resolver 구현
+   - delete~ resolver 구현
 
 ## 구현에 성공한 요구 사항
 
@@ -75,11 +77,8 @@ Node.js와 MongoDB를 연결시켜주는 모듈. GraphQL과 동일하게 schema�
 
 ## 구현에 실패한 요구 사항
 
-- `curl` 커맨드를 통한 GraphQL 쿼리
-  - GraphiQL playground에서는 정상적으로 쿼리문이 작동하나, 주어진 테스트 스크립트를 터미널에서 실행했을 때는 Connection Refused 오류와 함께 정상적으로 작동하지 않음을 확인했습니다. playground에서는 정상적인 결과를 내는 것으로 보아 쿼리문의 문제가 아닌 네트워크 상의 문제로 추정했지만 정확한 원인을 발견하지 못해 해결에 실패했습니다.
 - `@key` directive 사용
-  - 검색을 통해 `@key`라는 키워드가 directive라고 불린다는 것까지는 알아낼 수 있었지만, 해당 구문이 어떻게 사용되고 어떤 방식으로 구현에 반영되어야 하는지는 찾아낼 수 없어 `@key`를 사용하는 부분은 미구현 상태입니다.
-- `date` 필드가 주어지지 않을 시 최신 날짜의 데이터를 반환
+  - `@key` directive는 데이터의 primary key를 정의하는 데 사용되지만, 주어진 schema에서의 `@key` directive는 `src`와 `tgt`를 사용하고 있었습니다. `src`와 `tgt`는 데이터의 unique한 값이 될 수 없다고 생각해 `@key`로 적합하지 않은 것 같아 더 나은 구현 방법을 고민해 보았지만 찾을 수 없어 구현하지 못했습니다.
 
 ## Reference
 
@@ -94,3 +93,4 @@ Node.js와 MongoDB를 연결시켜주는 모듈. GraphQL과 동일하게 schema�
 
 - GraphQL, Express 연동 : <https://velog.io/@soryeongk/express-graphql-basic>
 - GraphQL, MongoDB 연동 : <https://yuddomack.tistory.com/entry/expressgraphql에-mongodb-사용하기>
+- @key directive : <https://blog.doctor-cha.com/integrating-graphql-services-with-graphql-federation>
